@@ -11,10 +11,11 @@ class App extends Component {
         };
         this.renderChoice = this.renderBallOrButton.bind(this)
         this.buttonClickHandler = this.buttonClickHandler.bind(this)
+        this.arrowKeyPressed = this.arrowKeyPressed.bind(this)
     };
 
     buttonClickHandler() {
-   
+        this.setState({renderBall: true}) 
    }
     renderBallOrButton() {
 		if (this.state.renderBall) {
@@ -24,14 +25,26 @@ class App extends Component {
 		}
     }
 
+    arrowKeyPressed(evt) {
+      if(evt.keyCode === 39){
+        if(this.state.renderBall){
+            const newPosI = this.state.posi + 5;
+            this.setState ({
+                posi: newPosI,
+                ballPosition: { left: newPosI + "px" }
+            })
+        }
+      }
+    }
+
     // bind ArrowRight keydown event
     componentDidMount() {
-      
+        document.addEventListener("keydown",this.arrowKeyPressed);
     }
 
     render() {
         return (
-            <div className="playground">
+            <div className="playground" onKeyPress={this.arrowKeyPressed}>
                 {this.renderBallOrButton()}
             </div>
         )
